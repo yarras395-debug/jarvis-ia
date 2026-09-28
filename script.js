@@ -14,7 +14,7 @@ const statusText = document.getElementById("status");
 // ==========================================
 
 const IA_URL =
-  "https://jarvis-ia.yacinearras84.workers.dev";
+ "https://jarvis-ia.yacinearras84.workers.dev";
 
 // ==========================================
 // CONNAISSANCES LOCALES
