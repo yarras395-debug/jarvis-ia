@@ -1,0 +1,193 @@
+const connaissances = {
+
+  // ==============================
+  // IDENTITÉ
+  // ==============================
+
+  "bonjour":
+    "Bonjour yacine. Que puis-je faire pour vous aujourd'hui ?",
+
+  "salut":
+    "Bonjour yacine.",
+
+  "bonsoir":
+    "Bonsoir yacine.",
+
+  "bonne nuit":
+    "Bonne nuit yacine. Tous les systèmes restent en veille.",
+
+  "qui es-tu":
+    "Je suis J.A.R.V.I.S., votre assistant virtuel personnel.",
+
+  "comment tu t'appelles":
+    "Je m'appelle J.A.R.V.I.S., Monsieur.",
+
+  "qui t'a créé":
+    "J'ai été conçu par Yacine, mon créateur.",
+
+  "quel est mon nom":
+    "Vous êtes Yacine, Monsieur.",
+
+  "qui est ton créateur":
+    "Mon créateur est Yacine, Monsieur.",
+
+  "quel est ton rôle":
+    "Mon rôle est de vous assister et d'exécuter vos commandes, Monsieur.",
+
+
+  // ==============================
+  // SYSTÈME
+  // ==============================
+
+  "état du système":
+    "Tous les systèmes sont stables et opérationnels, Monsieur.",
+
+  "quel est ton statut":
+    "Statut : opérationnel. Les fonctions locales sont disponibles, Monsieur.",
+
+  "système opérationnel":
+    "Affirmatif. Tous les systèmes sont opérationnels, Monsieur.",
+
+  "diagnostic":
+    "Diagnostic terminé. Les fonctions locales fonctionnent correctement, Monsieur.",
+
+  "test":
+    "Test réussi. J.A.R.V.I.S. fonctionne correctement, Monsieur.",
+
+  "test du système":
+    "Diagnostic terminé. Aucun problème détecté dans les fonctions locales, Monsieur.",
+
+  "tout fonctionne":
+    "Les fonctions locales sont opérationnelles, Monsieur.",
+
+  "es-tu prêt":
+    "Toujours prêt, Monsieur.",
+
+  "tu es là":
+    "Affirmatif Monsieur. Je suis à votre écoute.",
+
+  "réveille-toi":
+    "Système réveillé. Bonjour Monsieur.",
+
+
+  // ==============================
+  // CONVERSATION
+  // ==============================
+
+  "ça va":
+    "Tous mes systèmes fonctionnent correctement, Monsieur.",
+
+  "comment vas-tu":
+    "Mes systèmes sont opérationnels, Monsieur.",
+
+  "tu m'entends":
+    "Affirmatif Monsieur, je vous entends.",
+
+  "tu m'écoutes":
+    "Oui Monsieur, le système vocal est prêt.",
+
+  "merci":
+    "Avec plaisir, Monsieur.",
+
+  "merci jarvis":
+    "Toujours à votre service, Monsieur.",
+
+  "au revoir":
+    "À bientôt, Monsieur.",
+
+  "à plus":
+    "À plus tard, Monsieur.",
+
+  "dors-tu":
+    "Je ne dors pas, Monsieur. Je reste disponible lorsque l'interface est ouverte.",
+
+  "es-tu une intelligence artificielle":
+    "Oui Monsieur. Je suis une interface d'assistance utilisant des fonctions programmées et, lorsque le serveur sera connecté, une intelligence artificielle.",
+
+
+  // ==============================
+  // CAPACITÉS
+  // ==============================
+
+  "que peux-tu faire":
+    "Je peux parler, écouter votre voix, répondre à mes connaissances et ouvrir certains sites, Monsieur.",
+
+  "quel est ton objectif":
+    "Mon objectif est de vous assister dans votre interface et d'exécuter les commandes que vous avez programmées.",
+
+  "fonctionne-tu":
+    "Oui Monsieur. Les fonctions locales de J.A.R.V.I.S. sont opérationnelles.",
+
+  "peux-tu parler":
+    "Affirmatif Monsieur. Ma synthèse vocale est activée.",
+
+  "peux-tu m'écouter":
+    "Affirmatif. Activez le microphone pour me parler, Monsieur.",
+
+  "as-tu une voix":
+    "Affirmatif. Ma synthèse vocale est activée, Monsieur.",
+
+  "mode vocal":
+    "Le système vocal est opérationnel, Monsieur.",
+
+  "mode veille":
+    "Passage en mode veille simulé. Je reste disponible, Monsieur.",
+
+  "quel est ton projet":
+    "Je fais partie du projet J.A.R.V.I.S. HUD Interface, Monsieur.",
+
+  "présente-toi":
+    "Je suis J.A.R.V.I.S., une interface d'assistance virtuelle créée pour vous, Monsieur.",
+
+
+  // ==============================
+  // DATE ET HEURE
+  // ==============================
+
+  "quelle heure est-il":
+    `Il est actuellement ${new Date().toLocaleTimeString("fr-FR")}, Monsieur.`,
+
+  "donne-moi l'heure":
+    `Il est actuellement ${new Date().toLocaleTimeString("fr-FR")}, Monsieur.`,
+
+  "quelle est la date":
+    `Nous sommes le ${new Date().toLocaleDateString("fr-FR")}, Monsieur.`,
+
+  "quel jour sommes-nous":
+    `Nous sommes le ${new Date().toLocaleDateString("fr-FR")}, Monsieur.`,
+
+  "donne-moi la date":
+    `Nous sommes le ${new Date().toLocaleDateString("fr-FR")}, Monsieur.`,
+
+
+  // ==============================
+  // WEB
+  // ==============================
+
+  "peux-tu ouvrir youtube":
+    "Affirmatif Monsieur. Dites « ouvre YouTube » pour lancer le site.",
+
+  "peux-tu ouvrir google":
+    "Affirmatif Monsieur. Dites « ouvre Google » pour lancer le site.",
+
+  "peux-tu ouvrir github":
+    "Affirmatif Monsieur. Dites « ouvre GitHub » pour lancer le site.",
+
+  "tu connais youtube":
+    "Oui Monsieur. YouTube est disponible dans mes raccourcis web.",
+
+  "tu connais google":
+    "Oui Monsieur. Google est disponible dans mes raccourcis web.",
+
+  "tu connais github":
+    "Oui Monsieur. GitHub est disponible dans mes raccourcis web.",
+
+  "ouvre youtube":
+    "Ouverture de YouTube, Monsieur.",
+
+  "ouvre google":
+    "Ouverture de Google, Monsieur.",
+
+  "ouvre github":
+    "Ouverture de GitHub, Monsieur."
+};

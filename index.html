@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>J.A.R.V.I.S. Interface</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "@google/genai": "https://esm.run/@google/genai"
+    }
+  }
+</script>
+</head>
+<body>
+
+  <!-- Arrière-plan particules -->
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="jarvis-container">
+    <!-- En-tête HUD -->
+    <header class="hud-header">
+      <div class="brand">J.A.R.V.I.S.</div>
+      <div id="status" class="status-text">SYSTEM STANDBY</div>
+      <div id="clock">00:00:00</div>
+    </header>
+
+    <!-- Réacteur Arc Central -->
+    <main class="core-wrapper">
+      <div class="arc-reactor" id="starkCore" title="Cliquer pour activer le micro">
+        <div class="ring outer-ring"></div>
+        <div class="ring middle-ring"></div>
+        <div class="ring inner-ring"></div>
+        <div class="core-glow"></div>
+      </div>
+      <div class="speech-bubble" id="transcript">« En attente de vos instructions, Monsieur. »</div>
+    </main>
+
+    <!-- Barre d'interaction (Texte + Micro) -->
+    <footer class="hud-footer">
+      <form id="chatForm" class="input-box">
+        <input type="text" id="userInput" placeholder="Saisissez une commande pour J.A.R.V.I.S..." autocomplete="off">
+        <button type="submit" class="stark-btn">ENVOYER</button>
+        <button type="button" id="talkBtn" class="stark-btn icon-btn" title="Activer le micro">🎤</button>
+      </form>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
