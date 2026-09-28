@@ -1,5 +1,5 @@
 // ==========================================
-// J.A.R.V.I.S. - SCRIPT
+// J.A.R.V.I.S. - SCRIPT COMPLET
 // ==========================================
 
 const chatForm = document.getElementById("chatForm");
@@ -10,7 +10,14 @@ const transcriptText = document.getElementById("transcript");
 const statusText = document.getElementById("status");
 
 // ==========================================
-// CONNAISSANCES
+// CONFIGURATION IA
+// ==========================================
+
+const IA_URL =
+  "https://jarvis-ia.yacinearras84.workers.dev";
+
+// ==========================================
+// CONNAISSANCES LOCALES
 // ==========================================
 
 const connaissances = {
@@ -40,58 +47,31 @@ const connaissances = {
 
   "état du système": "Tous les systèmes sont stables et opérationnels, Monsieur.",
   "quel est ton statut": "Statut : opérationnel, Monsieur.",
-  "système opérationnel": "Affirmatif. Tous les systèmes sont opérationnels, Monsieur.",
   "diagnostic": "Diagnostic terminé. Les fonctions locales fonctionnent correctement, Monsieur.",
   "test": "Test réussi. J.A.R.V.I.S. fonctionne correctement, Monsieur.",
-  "test du système": "Diagnostic terminé. Aucun problème détecté dans les fonctions locales, Monsieur.",
-  "tout fonctionne": "Les fonctions locales sont opérationnelles, Monsieur.",
 
   "réveille-toi": "Système réveillé. Bonjour Monsieur.",
   "dors-tu": "Je ne dors pas, Monsieur. Je reste disponible lorsque l'interface est ouverte.",
   "peux-tu parler": "Affirmatif Monsieur. Ma synthèse vocale est activée.",
   "peux-tu m'écouter": "Affirmatif. Activez le microphone pour me parler, Monsieur.",
-  "as-tu une voix": "Affirmatif. Ma synthèse vocale est activée, Monsieur.",
-  "mode vocal": "Le système vocal est opérationnel, Monsieur.",
 
-  "que peux-tu faire": "Je peux parler, écouter votre voix, répondre à mes connaissances et ouvrir certains sites, Monsieur.",
-  "quel est ton objectif": "Mon objectif est de vous assister dans votre interface, Monsieur.",
-  "quel est ton projet": "Je fais partie du projet J.A.R.V.I.S. HUD Interface, Monsieur.",
-  "présente-toi": "Je suis J.A.R.V.I.S., une interface d'assistance virtuelle créée pour vous, Monsieur.",
-  "fonctionne-tu": "Oui Monsieur. Les fonctions locales de J.A.R.V.I.S. sont opérationnelles.",
-  "es-tu une intelligence artificielle": "Oui Monsieur. Je suis une interface d'assistance avec des fonctions programmées.",
+  "que peux-tu faire":
+    "Je peux parler, écouter votre voix, répondre à mes connaissances et utiliser mon intelligence artificielle, Monsieur.",
 
-  "quelle heure est-il":
-    `Il est actuellement ${new Date().toLocaleTimeString("fr-FR")}, Monsieur.`,
+  "quel est ton objectif":
+    "Mon objectif est de vous assister dans votre interface, Monsieur.",
 
-  "donne-moi l'heure":
-    `Il est actuellement ${new Date().toLocaleTimeString("fr-FR")}, Monsieur.`,
+  "quel est ton projet":
+    "Je fais partie du projet J.A.R.V.I.S. HUD Interface, Monsieur.",
 
-  "quelle est la date":
-    `Nous sommes le ${new Date().toLocaleDateString("fr-FR")}, Monsieur.`,
+  "présente-toi":
+    "Je suis J.A.R.V.I.S., une interface d'assistance virtuelle créée pour vous, Monsieur.",
 
-  "quel jour sommes-nous":
-    `Nous sommes le ${new Date().toLocaleDateString("fr-FR")}, Monsieur.`,
+  "fonctionne-tu":
+    "Oui Monsieur. Les fonctions locales et l'intelligence artificielle sont disponibles.",
 
-  "où sommes-nous":
-    "Nous sommes dans votre interface J.A.R.V.I.S., Monsieur.",
-
-  "peux-tu ouvrir youtube":
-    "Affirmatif Monsieur. Dites « ouvre YouTube » pour lancer le site.",
-
-  "peux-tu ouvrir google":
-    "Affirmatif Monsieur. Dites « ouvre Google » pour lancer le site.",
-
-  "peux-tu ouvrir github":
-    "Affirmatif Monsieur. Dites « ouvre GitHub » pour lancer le site.",
-
-  "tu connais youtube":
-    "Oui Monsieur. YouTube est disponible dans mes raccourcis web.",
-
-  "tu connais google":
-    "Oui Monsieur. Google est disponible dans mes raccourcis web.",
-
-  "tu connais github":
-    "Oui Monsieur. GitHub est disponible dans mes raccourcis web."
+  "es-tu une intelligence artificielle":
+    "Oui Monsieur. Je suis une interface d'assistance connectée à une intelligence artificielle."
 };
 
 // ==========================================
@@ -149,12 +129,14 @@ if (canvas) {
 
   function animateParticles() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     ctx.fillStyle = "#00f3ff";
 
     particles.forEach((particle) => {
       ctx.globalAlpha = particle.opacity;
 
       ctx.beginPath();
+
       ctx.arc(
         particle.x,
         particle.y,
@@ -162,15 +144,22 @@ if (canvas) {
         0,
         Math.PI * 2
       );
+
       ctx.fill();
 
       particle.y += particle.speedY;
 
-      if (particle.y < 0) particle.y = canvas.height;
-      if (particle.y > canvas.height) particle.y = 0;
+      if (particle.y < 0) {
+        particle.y = canvas.height;
+      }
+
+      if (particle.y > canvas.height) {
+        particle.y = 0;
+      }
     });
 
     ctx.globalAlpha = 1;
+
     requestAnimationFrame(animateParticles);
   }
 
@@ -178,7 +167,7 @@ if (canvas) {
 }
 
 // ==========================================
-// VOIX
+// SYNTHÈSE VOCALE
 // ==========================================
 
 function lireReponse(texte) {
@@ -218,6 +207,51 @@ function lireReponse(texte) {
 }
 
 // ==========================================
+// IA CLOUDFLARE → GROQ
+// ==========================================
+
+async function interrogerIA(message) {
+  try {
+    statusText.textContent = "IA EN COURS...";
+    transcriptText.textContent =
+      "Analyse de votre demande, Monsieur...";
+
+    const response = await fetch(IA_URL, {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        message: message
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data?.error || "Erreur de communication avec l'IA."
+      );
+    }
+
+    if (!data.reply) {
+      throw new Error("Réponse IA vide.");
+    }
+
+    lireReponse(data.reply);
+
+  } catch (error) {
+    console.error("Erreur IA :", error);
+
+    lireReponse(
+      "Je rencontre actuellement un problème de communication avec mon intelligence artificielle, Monsieur."
+    );
+  }
+}
+
+// ==========================================
 // MICRO
 // ==========================================
 
@@ -241,17 +275,24 @@ if (SpeechRecognition) {
       statusText.textContent = "ÉCOUTE EN COURS...";
       transcriptText.textContent =
         "Je vous écoute, Monsieur...";
+
     } catch (error) {
       console.log("Micro déjà actif.");
     }
   }
 
   if (talkBtn) {
-    talkBtn.addEventListener("click", startListening);
+    talkBtn.addEventListener(
+      "click",
+      startListening
+    );
   }
 
   if (starkCore) {
-    starkCore.addEventListener("click", startListening);
+    starkCore.addEventListener(
+      "click",
+      startListening
+    );
   }
 
   recognition.onresult = (event) => {
@@ -262,19 +303,30 @@ if (SpeechRecognition) {
   };
 
   recognition.onerror = (event) => {
-    console.error("Erreur micro :", event.error);
+    console.error(
+      "Erreur micro :",
+      event.error
+    );
 
-    statusText.textContent = "SYSTEM STANDBY";
+    statusText.textContent =
+      "SYSTEM STANDBY";
+
     transcriptText.textContent =
       "Signal vocal non détecté, Monsieur.";
   };
 
   recognition.onend = () => {
-    if (statusText.textContent === "ÉCOUTE EN COURS...") {
-      statusText.textContent = "SYSTEM STANDBY";
+    if (
+      statusText.textContent ===
+      "ÉCOUTE EN COURS..."
+    ) {
+      statusText.textContent =
+        "SYSTEM STANDBY";
     }
   };
+
 } else {
+
   console.warn(
     "La reconnaissance vocale n'est pas supportée."
   );
@@ -285,21 +337,27 @@ if (SpeechRecognition) {
 }
 
 // ==========================================
-// BOUTON ENVOYER
+// FORMULAIRE
 // ==========================================
 
 if (chatForm) {
-  chatForm.addEventListener("submit", (event) => {
-    event.preventDefault();
 
-    const message = userInput.value.trim();
+  chatForm.addEventListener(
+    "submit",
+    (event) => {
 
-    if (!message) return;
+      event.preventDefault();
 
-    userInput.value = "";
+      const message =
+        userInput.value.trim();
 
-    traiterMessage(message);
-  });
+      if (!message) return;
+
+      userInput.value = "";
+
+      traiterMessage(message);
+    }
+  );
 }
 
 // ==========================================
@@ -307,14 +365,27 @@ if (chatForm) {
 // ==========================================
 
 function traiterMessage(message) {
-  transcriptText.textContent = `« ${message} »`;
-  statusText.textContent = "ANALYSE EN COURS...";
 
-  const msgLower = message.toLowerCase().trim();
+  transcriptText.textContent =
+    `« ${message} »`;
 
-  // Raccourcis web
-  for (const [commande, url] of Object.entries(raccourcis)) {
+  statusText.textContent =
+    "ANALYSE EN COURS...";
+
+  const msgLower =
+    message.toLowerCase().trim();
+
+  // ------------------------------------------
+  // RACCOURCIS WEB
+  // ------------------------------------------
+
+  for (
+    const [commande, url]
+    of Object.entries(raccourcis)
+  ) {
+
     if (msgLower.includes(commande)) {
+
       window.open(url, "_blank");
 
       lireReponse(
@@ -328,16 +399,30 @@ function traiterMessage(message) {
     }
   }
 
-  // Connaissances
-  for (const [commande, reponse] of Object.entries(connaissances)) {
+  // ------------------------------------------
+  // CONNAISSANCES LOCALES
+  // ------------------------------------------
+
+  for (
+    const [commande, reponse]
+    of Object.entries(connaissances)
+  ) {
+
     if (msgLower.includes(commande)) {
+
       lireReponse(reponse);
+
       return;
     }
   }
 
-  // Question inconnue
-  lireReponse(
-    "Je n'ai pas encore la réponse à cette question, Monsieur."
-  );
+  // ------------------------------------------
+  // IA
+  // ------------------------------------------
+
+  interrogerIA(message);
 }
+
+// ==========================================
+// FIN
+// ==========================================
