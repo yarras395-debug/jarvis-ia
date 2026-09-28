@@ -1,17 +1,50 @@
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "https://yarras395-debug.github.io",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type"
+};
+
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      ...corsHeaders
+    }
+  });
+}
+
 export default {
   async fetch(request, env) {
+
+    // Autorisation du navigateur
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: corsHeaders
+      });
+    }
+
+    // Test du Worker
     if (request.method !== "POST") {
-      return new Response("J.A.R.V.I.S. API OK");
+      return new Response("J.A.R.V.I.S. API OK", {
+        status: 200,
+        headers: corsHeaders
+      });
     }
 
     try {
       const body = await request.json();
-      const message = body.message;
+      const message = body?.message;
 
       if (!message) {
-        return Response.json(
-          { error: "Message vide." },
-          { status: 400 }
+        return json({ error: "Message vide." }, 400);
+      }
+
+      if (!env.GROQ_API_KEY) {
+        return json(
+          { error: "Le secret GROQ_API_KEY n'est pas disponible." },
+          500
         );
       }
 
@@ -29,7 +62,7 @@ export default {
               {
                 role: "system",
                 content:
-                  "Tu es J.A.R.V.I.S., l'assistant de Yacine. Réponds en français, de manière naturelle, précise et concise. Appelle l'utilisateur Monsieur."
+                  "Tu es J.A.R.V.I.S., l'assistant de Yacine. Réponds en français, naturellement, précisément et de façon concise. Appelle l'utilisateur Monsieur."
               },
               {
                 role: "user",
@@ -45,26 +78,33 @@ export default {
       const data = await response.json();
 
       if (!response.ok) {
-        return Response.json(
+        console.error("Erreur Groq :", data);
+
+        return json(
           {
             error:
               data?.error?.message ||
               "Erreur Groq."
           },
-          { status: response.status }
+          response.status
         );
       }
 
-      const reply = data?.choices?.[0]?.message?.content;
+      const reply =
+        data?.choices?.[0]?.message?.content;
 
-      return Response.json({
-        reply: reply || "Je n'ai pas reçu de réponse, Monsieur."
+      return json({
+        reply:
+          reply ||
+          "Je n'ai pas reçu de réponse, Monsieur."
       });
 
     } catch (error) {
-      return Response.json(
+      console.error("Erreur Worker :", error);
+
+      return json(
         { error: "Erreur serveur." },
-        { status: 500 }
+        500
       );
     }
   }
